@@ -30,8 +30,7 @@ jobs:
           distribution: temurin
           java-version: 11
           cache: maven
-      - run: mvn -B clean verify -Ddocker.repo=ghcr.io/inoa-io/thingsboard -Ddockerfile.skip=false -Dmaven.test.skip=true
-      - run: mvn -B install -Ddocker.repo=ghcr.io/inoa-io/thingsboard -Ddockerfile.skip=false -Dmaven.test.skip=true
+      - run: mvn clean install -Ddocker.repo=ghcr.io/inoa-io/thingsboard -DskipTests -Ddockerfile.skip=false
       - name: docker login
         if: github.ref == 'refs/heads/master'
         uses: docker/login-action@v1
@@ -43,3 +42,5 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           docker images
+          docker push --all-tags ghcr.io/inoa-io/thingsboard/tb-node
+          docker push --all-tags ghcr.io/inoa-io/thingsboard/tb-web-ui
